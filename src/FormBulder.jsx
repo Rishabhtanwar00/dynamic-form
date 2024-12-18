@@ -22,9 +22,11 @@ const FormBulder = () => {
 			{
 				id: Date.now(),
 				type: type,
-				label: `New ${type} field`,
-				placeholder: `Enter ${type}`,
+				label: `New ${type === 'submit' ? 'button' : type + ' field'}`,
+				name: '',
+				placeholder: ` Enter ${type}`,
 				required: false,
+				disabled: false,
 			},
 		]);
 	};
@@ -43,8 +45,10 @@ const FormBulder = () => {
 			id: '',
 			type: '',
 			label: '',
+			name: '',
 			placeholder: '',
 			required: false,
+			disabled: false,
 		});
 	};
 
@@ -79,31 +83,37 @@ const FormBulder = () => {
 			<h1>Dynamic Form Builder</h1>
 			<div className='flex gap-5'>
 				<button
-					className='px-5 py-2 bg-black text-white'
+					className='px-5 py-2 bg-black text-white active:scale-90 transition-all duration-200 ease-in-out'
 					onClick={() => addField('text')}
 				>
 					Text
 				</button>
 				<button
-					className='px-5 py-2 bg-black text-white'
+					className='px-5 py-2 bg-black text-white active:scale-90 transition-all duration-200 ease-in-out'
 					onClick={() => addField('email')}
 				>
 					Email
 				</button>
 				<button
-					className='px-5 py-2 bg-black text-white'
+					className='px-5 py-2 bg-black text-white active:scale-90 transition-all duration-200 ease-in-out'
 					onClick={() => addField('password')}
 				>
 					Password
 				</button>
 				<button
-					className='px-5 py-2 bg-green-500 text-white'
+					className='px-5 py-2 bg-black text-white active:scale-90 transition-all duration-200 ease-in-out'
+					onClick={() => addField('submit')}
+				>
+					Button
+				</button>
+				<button
+					className='px-5 py-2 bg-green-500 text-white active:scale-90 transition-all duration-200 ease-in-out'
 					onClick={() => saveForm()}
 				>
 					Save
 				</button>
 				<button
-					className='px-5 py-2 bg-red-500 text-white'
+					className='px-5 py-2 bg-red-500 text-white active:scale-90 transition-all duration-200 ease-in-out'
 					onClick={() => setShowPreview(true)}
 				>
 					Preview
@@ -129,24 +139,36 @@ const FormBulder = () => {
 								className='px-2 py-1 h-fit bg-black text-white text-sm'
 								onClick={() => setFormLabel({ ...formLabel, disabled: false })}
 							>
-								edit
+								Edit
 							</button>
 						</div>
 
 						{fields.map((item, index) => (
 							<div key={index} className='flex items-center gap-5 w-[100%]'>
-								<div className='flex items-center w-[100%] justify-between py-3 gap-2'>
-									<label className='w-[200px]'>{item.label}</label>
+								{item.type !== 'submit' ? (
+									<div className='flex items-center w-[100%] justify-between py-3 gap-2'>
+										<label className='w-[200px]'>{item.label}</label>
 
-									<input
-										className='border px-3 py-2 min-w-[350px] text-ellipsis overflow-hidden'
-										id={item.id}
-										type={item.type}
-										placeholder={item.placeholder}
-										required={item.required}
-										disabled
-									/>
-								</div>
+										<input
+											className='border px-3 py-2 min-w-[350px] text-ellipsis overflow-hidden'
+											id={item.id}
+											type={item.type}
+											placeholder={item.placeholder}
+											required={item.required}
+											disabled
+										/>
+									</div>
+								) : (
+									<div className='flex items-center w-[100%] justify-between py-3 gap-2'>
+										<label className='w-[200px]'></label>
+										<input
+											className='border px-3 py-2 min-w-[350px] bg-green-500 text-white'
+											id={item.id}
+											type={item.type}
+											value={item.label}
+										/>
+									</div>
+								)}
 								<button
 									onClick={() => removeField(item.id)}
 									className='px-3 py-1 bg-gray-200 text-black'
@@ -185,31 +207,67 @@ const FormBulder = () => {
 								}
 							/>
 						</div>
+						{updatedField.type !== 'submit' && (
+							<>
+								<div className='flex justify-between items-center py-2'>
+									<p className='w-[130px]'>Name (used as key in form data):</p>
+									<input
+										className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
+										type='text'
+										placeholder='enter updated placeholder'
+										value={updatedField.name}
+										onChange={(e) =>
+											setUpdatedField({
+												...updatedField,
+												name: e.target.value,
+											})
+										}
+									/>
+								</div>
+								<div className='flex justify-between items-center py-2'>
+									<p className='w-[130px]'>Placeholder:</p>
+									<input
+										className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
+										type='text'
+										placeholder='enter updated placeholder'
+										value={updatedField.placeholder}
+										onChange={(e) =>
+											setUpdatedField({
+												...updatedField,
+												placeholder: e.target.value,
+											})
+										}
+									/>
+								</div>
+								<div className='flex justify-between items-center py-2'>
+									<p className='w-[130px]'>Required:</p>
+
+									<select
+										className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
+										value={updatedField.required}
+										onChange={(e) =>
+											setUpdatedField({
+												...updatedField,
+												required: e.target.value === 'true' ? true : false,
+											})
+										}
+									>
+										<option value={false}>False</option>
+										<option value={true}>True</option>
+									</select>
+								</div>
+							</>
+						)}
 						<div className='flex justify-between items-center py-2'>
-							<p className='w-[130px]'>Placeholder:</p>
-							<input
-								className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
-								type='text'
-								placeholder='enter updated placeholder'
-								value={updatedField.placeholder}
-								onChange={(e) =>
-									setUpdatedField({
-										...updatedField,
-										placeholder: e.target.value,
-									})
-								}
-							/>
-						</div>
-						<div className='flex justify-between items-center py-2'>
-							<p className='w-[130px]'>Required:</p>
+							<p className='w-[130px]'>Disabled:</p>
 
 							<select
 								className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
-								value={updatedField.required}
+								value={updatedField.disabled}
 								onChange={(e) =>
 									setUpdatedField({
 										...updatedField,
-										required: e.target.value === 'true' ? true : false,
+										disabled: e.target.value === 'true' ? true : false,
 									})
 								}
 							>

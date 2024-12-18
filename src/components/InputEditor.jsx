@@ -1,4 +1,18 @@
 const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
+	const handleChange = (e) => {
+		setUpdatedField({
+			...updatedField,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const handleDropdownChange = (e) => {
+		setUpdatedField({
+			...updatedField,
+			[e.target.name]: e.target.value === 'true' ? true : false,
+		});
+	};
+
 	return (
 		<>
 			<div className='flex justify-between items-center py-2'>
@@ -6,11 +20,10 @@ const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
 				<input
 					className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
 					type='text'
+					name='label'
 					placeholder='enter updated label'
 					value={updatedField.label}
-					onChange={(e) =>
-						setUpdatedField({ ...updatedField, label: e.target.value })
-					}
+					onChange={handleChange}
 				/>
 			</div>
 			{updatedField.type !== 'submit' && (
@@ -21,13 +34,9 @@ const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
 							className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
 							type='text'
 							placeholder='enter updated placeholder'
+							name='name'
 							value={updatedField.name}
-							onChange={(e) =>
-								setUpdatedField({
-									...updatedField,
-									name: e.target.value,
-								})
-							}
+							onChange={handleChange}
 						/>
 					</div>
 					<div className='flex justify-between items-center py-2'>
@@ -36,13 +45,9 @@ const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
 							className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
 							type='text'
 							placeholder='enter updated placeholder'
+							name='placeholder'
 							value={updatedField.placeholder}
-							onChange={(e) =>
-								setUpdatedField({
-									...updatedField,
-									placeholder: e.target.value,
-								})
-							}
+							onChange={handleChange}
 						/>
 					</div>
 					<div className='flex justify-between items-center py-2'>
@@ -50,13 +55,9 @@ const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
 
 						<select
 							className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
+							name='required'
 							value={updatedField.required}
-							onChange={(e) =>
-								setUpdatedField({
-									...updatedField,
-									required: e.target.value === 'true' ? true : false,
-								})
-							}
+							onChange={handleDropdownChange}
 						>
 							<option value={false}>False</option>
 							<option value={true}>True</option>
@@ -70,12 +71,8 @@ const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
 				<select
 					className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
 					value={updatedField.disabled}
-					onChange={(e) =>
-						setUpdatedField({
-							...updatedField,
-							disabled: e.target.value === 'true' ? true : false,
-						})
-					}
+					name='disabled'
+					onChange={handleDropdownChange}
 				>
 					<option value={false}>False</option>
 					<option value={true}>True</option>

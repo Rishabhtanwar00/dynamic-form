@@ -1,6 +1,5 @@
 // import { useEffect } from 'react';
-import FormBulder from './FormBulder';
-
+import FormBuilder from './components/FormBuilder';
 function App() {
 	// useEffect(() => {
 	// 	const unloadCallback = (event) => {
@@ -14,7 +13,7 @@ function App() {
 	// }, []);
 	return (
 		<div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
-			<FormBulder />
+			<FormBuilder />
 		</div>
 	);
 }

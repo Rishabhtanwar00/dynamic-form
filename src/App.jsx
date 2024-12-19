@@ -1,19 +1,14 @@
-// import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import FormBuilder from './components/FormBuilder';
-function App() {
-	// useEffect(() => {
-	// 	const unloadCallback = (event) => {
-	// 		event.preventDefault();
-	// 		event.returnValue = '';
-	// 		return '';
-	// 	};
+import LandingPage from './components/LandingPage';
 
-	// 	window.addEventListener('beforeunload', unloadCallback);
-	// 	return () => window.removeEventListener('beforeunload', unloadCallback);
-	// }, []);
+function App() {
 	return (
-		<div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
-			<FormBuilder />
+		<div className=''>
+			<Routes>
+				<Route path='/' element={<LandingPage />} />
+				<Route path='/create-form/:formId' element={<FormBuilder />} />
+			</Routes>
 		</div>
 	);
 }

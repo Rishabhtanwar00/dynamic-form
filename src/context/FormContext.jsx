@@ -1,8 +1,12 @@
 import { createContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 
 export const FormContext = createContext();
 
 const FormContextProvider = (props) => {
+	const navigate = useNavigate();
+
 	const [forms, setForms] = useState([]);
 
 	const [formLabel, setFormLabel] = useState({
@@ -89,7 +93,23 @@ const FormContextProvider = (props) => {
 		setFormData({});
 	};
 
+	const createNewForm = (formname) => {
+		const id = uuid();
+		const newForm = {
+			id: id,
+			name: formname,
+			title: formname,
+		};
+		setForms([...forms, newForm]);
+		return id;
+	};
+
+	useEffect(() => {
+		console.log(forms);
+	}, [forms]);
+
 	const value = {
+		navigate,
 		forms,
 		setForms,
 		fields,
@@ -112,6 +132,7 @@ const FormContextProvider = (props) => {
 		handleDropdownChange,
 		saveForm,
 		handleFormSubmit,
+		createNewForm,
 	};
 
 	useEffect(() => {

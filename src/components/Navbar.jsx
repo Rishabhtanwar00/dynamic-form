@@ -1,30 +1,8 @@
-const Navbar = ({
-	fields,
-	setFields,
-	formLabel,
-	setFormLabel,
-	setShowPreview,
-}) => {
-	const addField = async (type) => {
-		setFields([
-			...fields,
-			{
-				id: Date.now(),
-				type: type,
-				label: `New ${type === 'submit' ? 'button' : type + ' field'}`,
-				name: '',
-				placeholder: ` Enter ${type}`,
-				required: false,
-				disabled: false,
-			},
-		]);
-	};
+import { useContext } from 'react';
+import { FormContext } from '../context/FormContext';
 
-	const saveForm = () => {
-		localStorage.setItem('fields', JSON.stringify(fields));
-		setFormLabel({ ...formLabel, disabled: true });
-		localStorage.setItem('formlabel', JSON.stringify(formLabel));
-	};
+const Navbar = () => {
+	const { addField, saveForm, setShowPreview } = useContext(FormContext);
 
 	return (
 		<div className='flex gap-5'>

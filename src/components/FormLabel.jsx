@@ -1,4 +1,8 @@
-const FormLabel = ({ formLabel, setFormLabel }) => {
+import { useContext } from 'react';
+import { FormContext } from '../context/FormContext';
+
+const FormLabel = () => {
+	const { formLabel, setFormLabel } = useContext(FormContext);
 	return (
 		<div className='flex gap-5 pb-10'>
 			<input

@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useContext } from 'react';
+import { FormContext } from '../context/FormContext';
 
-const PreviewForm = ({ formLabel, fields, setShowPreview }) => {
-	const [formData, setFormData] = useState({});
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		console.log('formdata : ' + JSON.stringify(formData));
-
-		setFormData({});
-	};
+const PreviewForm = () => {
+	const {
+		formLabel,
+		fields,
+		setShowPreview,
+		formData,
+		setFormData,
+		handleFormSubmit,
+	} = useContext(FormContext);
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,19 +29,10 @@ const PreviewForm = ({ formLabel, fields, setShowPreview }) => {
 						{formLabel.title}
 					</h1>
 					<form
-						onSubmit={handleSubmit}
+						onSubmit={handleFormSubmit}
 						className='py-4 grid gtid-cols-1 md:grid-cols-2 gap-5'
 					>
 						{fields.map((item, index) =>
-							// <div key={index} className='flex gap-5 py-3'>
-							// 	<label>{item.label}</label>
-							// 	<input
-							// 		type={item.type}
-							// 		placeholder={item.placeholder}
-							// 		required={item.required}
-							// 	/>
-							// </div>
-
 							item.type !== 'submit' ? (
 								<div
 									key={index}

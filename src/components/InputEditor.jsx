@@ -1,17 +1,9 @@
-const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
-	const handleChange = (e) => {
-		setUpdatedField({
-			...updatedField,
-			[e.target.name]: e.target.value,
-		});
-	};
+import { useContext } from 'react';
+import { FormContext } from '../context/FormContext';
 
-	const handleDropdownChange = (e) => {
-		setUpdatedField({
-			...updatedField,
-			[e.target.name]: e.target.value === 'true' ? true : false,
-		});
-	};
+const InputEditor = () => {
+	const { updatedField, handleEditorChange, handleDropdownChange, saveEditorForm } =
+		useContext(FormContext);
 
 	return (
 		<>
@@ -23,20 +15,20 @@ const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
 					name='label'
 					placeholder='enter updated label'
 					value={updatedField.label}
-					onChange={handleChange}
+					onChange={handleEditorChange}
 				/>
 			</div>
 			{updatedField.type !== 'submit' && (
 				<>
 					<div className='flex justify-between items-center py-2'>
-						<p className='w-[130px]'>Name (used as key in form data):</p>
+						<p className='w-[130px]'>Id:</p>
 						<input
 							className='border px-3 py-1.5 min-w-[250px] rounded text-ellipsis overflow-hidden'
 							type='text'
-							placeholder='enter updated placeholder'
+							placeholder='id - used as key on submit'
 							name='name'
 							value={updatedField.name}
-							onChange={handleChange}
+							onChange={handleEditorChange}
 						/>
 					</div>
 					<div className='flex justify-between items-center py-2'>
@@ -47,7 +39,7 @@ const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
 							placeholder='enter updated placeholder'
 							name='placeholder'
 							value={updatedField.placeholder}
-							onChange={handleChange}
+							onChange={handleEditorChange}
 						/>
 					</div>
 					<div className='flex justify-between items-center py-2'>
@@ -79,7 +71,7 @@ const InputEditor = ({ updatedField, setUpdatedField, updateField }) => {
 				</select>
 			</div>
 			<button
-				onClick={() => updateField(updatedField)}
+				onClick={() => saveEditorForm(updatedField)}
 				className='px-3 py-1 bg-green-400 text-black'
 			>
 				save

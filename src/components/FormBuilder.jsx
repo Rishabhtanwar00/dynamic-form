@@ -1,80 +1,29 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useContext } from 'react';
 import PreviewForm from './PreviewForm';
 import Navbar from './Navbar';
 import FormLabel from './FormLabel';
 import InputComponent from './InputComponent';
 import InputEditor from './InputEditor';
+import { FormContext } from '../context/FormContext';
 
 const FormBuilder = () => {
-	const [formLabel, setFormLabel] = useState({
-		title: 'Form label',
-		disabled: true,
-	});
-
-	const [fields, setFields] = useState([]);
-
-	const [updatedField, setUpdatedField] = useState({});
-
-	const [showProperties, setShowProperties] = useState(false);
-
-	const [showPreview, setShowPreview] = useState(false);
-
-	const removeField = (id) => {
-		setFields(fields.filter((item) => item.id !== id));
-		setShowProperties(false);
-	};
-
-	const updateField = async (updatedField) => {
-		setFields(
-			fields.map((item) => (item.id === updatedField.id ? updatedField : item))
-		);
-		setShowProperties(false);
-		setUpdatedField({
-			id: '',
-			type: '',
-			label: '',
-			name: '',
-			placeholder: '',
-			required: false,
-			disabled: false,
-		});
-	};
-
-	const changeSettings = async (id) => {
-		setShowProperties(true);
-		const field = fields.filter((item) => item.id === id)[0];
-		setUpdatedField(field);
-	};
-
-	useEffect(() => {
-		console.log(updatedField);
-	}, [fields, updatedField]);
-
-	useEffect(() => {
-		const savedFields = JSON.parse(localStorage.getItem('fields'));
-		if (savedFields) setFields(savedFields);
-
-		const savedLabel = JSON.parse(localStorage.getItem('formlabel'));
-		if (savedLabel) {
-			setFormLabel({ ...savedLabel, disabled: true });
-		}
-	}, []);
+	const {
+		fields,
+		removeField,
+		changeSettings,
+		showPreview,
+		showProperties,
+		setShowProperties,
+	} = useContext(FormContext);
 
 	return (
 		<div className='w-[100%] flex flex-col items-center gap-5 py-10 relative '>
 			<h1>Dynamic Form Builder</h1>
-			<Navbar
-				fields={fields}
-				setFields={setFields}
-				formLabel={formLabel}
-				setFormLabel={setFormLabel}
-				setShowPreview={setShowPreview}
-			/>
+			<Navbar />
 			{fields.length > 0 && (
 				<>
 					<div className='py-10 flex flex-col items-center'>
-						<FormLabel formLabel={formLabel} setFormLabel={setFormLabel} />
+						<FormLabel />
 
 						{fields.map((item, index) => (
 							<div key={index} className='flex items-center gap-5 w-[100%]'>
@@ -105,11 +54,7 @@ const FormBuilder = () => {
 						>
 							&#10008;
 						</button>
-						<InputEditor
-							updatedField={updatedField}
-							setUpdatedField={setUpdatedField}
-							updateField={updateField}
-						/>
+						<InputEditor />
 					</div>
 				</>
 			)}
@@ -118,11 +63,7 @@ const FormBuilder = () => {
 					showPreview ? 'scale-100' : 'scale-0'
 				} absolute top-0 left-[-9vw] transition-all duration-300 ease-in-out`}
 			>
-				<PreviewForm
-					fields={fields}
-					formLabel={formLabel}
-					setShowPreview={setShowPreview}
-				/>
+				<PreviewForm />
 			</div>
 		</div>
 	);
